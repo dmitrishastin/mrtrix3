@@ -40,6 +40,9 @@ namespace MR
 
       + Option ("seed_sphere", "spherical seed as four comma-separated values (XYZ position and radius)").allow_multiple()
         + Argument ("spec").type_sequence_float()
+        
+      + Option ("seed_cds", "provide the coordinate file - should always have coordinates written down as a 3-column matrix (x,y,z)")
+        + Argument ("cds_path").type_file_in()
 
       + Option ("seed_random_per_voxel", "seed a fixed number of streamlines per voxel in a mask image; random placement of seeds in each voxel").allow_multiple()
         + Argument ("image").type_image_in()
@@ -126,6 +129,21 @@ namespace MR
         for (size_t i = 0; i < opt.size(); ++i) {
           Sphere* seed = new Sphere (opt[i][0]);
           list.add (seed);
+        }
+        
+        opt = get_options ("seed_cds");
+        // seed from coordinates
+        // basically loads and parses the file containing the matrix with coordinates
+        // then takes each coordinate as a sphere with a radius of zero and a volume of one (volume defined in basic.h)
+        std::string cds_path = opt[0][0];
+        if (opt.size()) {   
+          std::string cds_path = opt[0][0];
+          Eigen::MatrixXd Coord_seed = load_matrix<> (cds_path);
+          for (size_t i=0; i < Coord_seed.rows() ; i++) {
+            std::string i_sph = std::to_string(Coord_seed(i,0)) + "," + std::to_string(Coord_seed(i,1)) + "," + std::to_string(Coord_seed(i,2)) + ",0";
+            Sphere* seed = new Sphere (i_sph);
+            list.add (seed);
+          }
         }
 
         opt = get_options ("seed_random_per_voxel");
