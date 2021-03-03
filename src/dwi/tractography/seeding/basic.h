@@ -50,7 +50,10 @@ namespace MR
                   throw Exception ("Could not parse seed \"" + in + "\" as a spherical seed point; needs to be 4 comma-separated values (XYZ position, then radius)");
                 pos = { float(F[0]), float(F[1]), float(F[2]) };
                 rad = F[3];
-                volume = 4.0*Math::pi*Math::pow3(rad)/3.0;
+                /* below is a little cheat to enable coordinate-based seeding --
+                makes volume equal to unity if radius is 0 */ 
+                if (rad == 0){ volume = -1; } else { volume = 4.0*Math::pi*Math::pow3(rad)/3.0; };
+                if (volume == -1){ volume = 1; }; 
               }
 
             virtual bool get_seed (Eigen::Vector3f& p) const override;
