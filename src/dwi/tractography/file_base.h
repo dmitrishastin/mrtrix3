@@ -102,8 +102,8 @@ namespace MR
               for (const auto& i : properties.comments)
                 out << "comment: " << i << "\n";
 
-              for (size_t n = 0; n < properties.seeds.num_seeds(); ++n)
-                out << "roi: seed " << properties.seeds[n]->get_name() << "\n";
+              //for (size_t n = 0; n < properties.seeds.num_seeds(); ++n)
+              //  out << "roi: seed " << properties.seeds[n]->get_name() << "\n";
               for (size_t n = 0; n < properties.include.size(); ++n)
                 out << "roi: include " << properties.include[n].parameters() << "\n";
               for (size_t n = 0; n < properties.exclude.size(); ++n)
