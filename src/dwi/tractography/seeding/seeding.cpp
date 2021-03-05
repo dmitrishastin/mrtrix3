@@ -41,7 +41,7 @@ namespace MR
       + Option ("seed_sphere", "spherical seed as four comma-separated values (XYZ position and radius)").allow_multiple()
         + Argument ("spec").type_sequence_float()
         
-      + Option ("seed_cds", "provide the coordinate file - should always have coordinates written down as a 3-column matrix (x,y,z)")
+      + Option ("seed_cds", "provide the coordinate file - should always have coordinates written down as a 3-column matrix (x,y,z)").allow_multiple()
         + Argument ("cds_path").type_file_in()
 
       + Option ("seed_random_per_voxel", "seed a fixed number of streamlines per voxel in a mask image; random placement of seeds in each voxel").allow_multiple()
@@ -135,7 +135,6 @@ namespace MR
         // seed from coordinates
         // basically loads and parses the file containing the matrix with coordinates
         // then takes each coordinate as a sphere with a radius of zero and a volume of one (volume defined in basic.h)
-        std::string cds_path = opt[0][0];
         if (opt.size()) {   
           std::string cds_path = opt[0][0];
           Eigen::MatrixXd Coord_seed = load_matrix<> (cds_path);
